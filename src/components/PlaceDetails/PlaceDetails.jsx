@@ -1,13 +1,64 @@
 import React from 'react'
-import {Box,Typography,Button,Card,CardMedia,CardContent,CardActions,Chip} from '@material-ui/core'
+import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions, Chip } from '@material-ui/core'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PhoneIcon from '@material-ui/icons/Phone';
 import Rating from '@material-ui/lab/Rating';
 
 import useStyles from './styles';
-const PlaceDetails = ({place}) => {
+const PlaceDetails = ({ place }) => {
+  const classes = useStyles();
   return (
-    <h1>{place.name}</h1>
+    <Card elevation={6}>
+      <CardMedia
+        style={{ height: 350 }}
+        image={place.photo ? place.photo.images.large.url : 'https://media-cdn.tripadvisor.com/media/photo-s/1a/b8/46/6d/london-stock.jpg'}
+        title={place.name}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5 ">{place.name}</Typography>
+        <Box display="flex" justifycontent="space-between" >
+        <Rating value={Number(place.rating)} readOnly/>
+          <Typography gutterBottom variant="subtitle1">{place.price_level}</Typography>
+        </Box>
+        <Box display="flex" justifycontent="space-between" >
+          <Typography variant="subtitle1">Price</Typography>
+          <Typography gutterBottom variant="subtitle1">Out of {place.num_reviews} Reviews</Typography>
+        </Box>
+        <Box display="flex" justifycontent="space-between" >
+          <Typography variant="subtitle1">Ranking</Typography>
+          <Typography gutterBottom variant="subtitle1">{place.ranking}</Typography>
+        </Box>
+        {place?.awards?.map((award) => (
+          <Box my={1} display="flex" justifyContent="space-between" alignItems="center">
+            <img src={award.images.small} alt={award.display_name}></img>
+            <Typography variant="subtitle2" color="textSecondary">{award.display_name}</Typography>
+          </Box>
+        ))}
+        {place?.cuisine?.map(({ name }) => (
+          <Chip key={name} size="small" label={name} className={classes.chip}></Chip>
+        ))}
+        {/* {place?.address?.map(({address})=>(
+          <Typography gutterBottom variant = "body2" color = "textSecondary" className ={classes.subtitle}>
+            <LocationOnIcon/> {address}
+          </Typography>
+      ))} */}
+
+        {<Typography gutterBottom variant="body2" color="textSecondary" className={classes.subtitle}>
+          <LocationOnIcon /> {place.address}
+        </Typography>}
+        {<Typography gutterBottom variant="body2" color="textSecondary" className={classes.spacing}>
+          <PhoneIcon /> {place.phone ? place.phone : "Null"}
+        </Typography>}
+        <CardActions>
+          <Button size="small" color="primary" onClick={() => window.open(place.web_url, '_blank')} >
+            Trip Advisor
+          </Button>
+          <Button size="small" color="primary" onClick={() => window.open(place.website, '_blank')} >
+            Website
+          </Button>
+        </CardActions>
+      </CardContent>
+    </Card>
   )
 }
 
