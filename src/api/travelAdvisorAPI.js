@@ -26,13 +26,12 @@ export const getWeatherData = async (lat, lng) => {
   try {
     if (lat && lng) {
       const { data } = await axios.get('https://community-open-weather-map.p.rapidapi.com/weather', {
-        params: { lat, lon: lng },
+        params: { lat:lat, lon: lng },
         headers: {
           'x-rapidapi-key': process.env.REACT_APP_RAPID_API_WEATHER_API_KEY,
           'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
         },
       });
-
       return data;
     }
   } catch (error) {
